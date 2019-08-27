@@ -21,7 +21,7 @@ mysqldump -u $user -h $host_from $db_old_name > $dump_file
 result=$?
 if [[ $result -ne 0 ]]
   then
-    echo "Result:  error in \`mysqldump $db_new_name\` command!"
+    echo "Result:  error in \`mysqldump $db_old_name\` command!"
     echo "Script aborted"
     exit $result
   else
