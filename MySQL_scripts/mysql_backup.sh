@@ -30,17 +30,18 @@ mysql_user="root"                       # username with Grand priveleges for dum
 mysql_pass=""                           # password for user
 mysql_host="localhost"                  # hostname or IP of MySQL server
 
-compress_ratio=5                        # default comperss ratio for gzip
+# Ignore databases list. Use space between bases.
+ignore_bases="test information_schema performance_schema"
 
-# If compression is used determine compress ratio 
+# default comperss ratio for gzip
+compress_ratio=5
+
+# If compression is used set compress ratio
 if [[ -n $2 ]] && [[ $2 -ge 1 ]] && [[ $2 -le 9 ]]
 then
     comperss_ratio=$2
 fi
 
-
-# Ignore databases list. Use space between bases.
-ignore_bases="test information_schema performance_schema"
 
 echo '*******************************************************************'
 echo 'Start backup databses'
@@ -61,7 +62,7 @@ read_mee="$dir_backups"/dumping_databases_list.txt
 
 if [ ! -d $dir_backups ]
 then
-    echo "dir $dir_backups is absent, .......... create dir"
+    echo "dir $dir_backups is not exists, .......... create dir"
     mkdir -p $dir_backups
 fi
 
