@@ -13,7 +13,7 @@ mysql -N -s -e "SHOW STATUS LIKE 'Uptime'"
 echo '____________________________'
 echo "Count of current connection:   "
 mysql -N -s -e "SHOW STATUS LIKE 'Threads_connected'"
-
+echo
 
 mysql -e "STATUS"
 
