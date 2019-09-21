@@ -48,6 +48,7 @@ echo 'Start backup databses'
 
 # Get data in yyyy_mm_dd format
 current_date="$(date +"%Y_%m_%d")"
+current_time="$(date +"%T")"
 
 # Backup destination directory
 dir_dest="$HOME/temp/tmp"
@@ -82,7 +83,7 @@ databases="$(mysql -u $mysql_user -Bse 'show databases')"
 
 # filling some information to the log file
 echo "List of dumping databases in $read_mee"
-echo "Dump create $current_date" > "$read_mee"
+echo "Dump create $current_date at $current_time" > "$read_mee"
 echo "-------------------------" >> "$read_mee"
 echo "Warning: if you made dump with out compression the *.sql files include commands:" >> "$read_mee"
 echo "\"DROP DATABASE IF EXIST...\"    \"CREATE DATABASE...\"    \"USE...\"" >> "$read_mee"
