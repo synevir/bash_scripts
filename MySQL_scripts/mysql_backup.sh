@@ -68,24 +68,32 @@ then
 fi
 
 
-#----------------------------
+#---------------------------------
 # Only root can access it!
-# ---------------------------
+# --------------------------------
 #chown root:root -R $dir_dest
 #chmod 0600 $dir_dest
 
-# Create databases list
-#------------------------
+# Create and check databases list
+#---------------------------------
 # need a password line:
 # databases="$(mysql -u $mysql_user -h $mysql_host -p$mysql_pass -Bse 'show databases')"
 databases="$(mysql -u $mysql_user -Bse 'show databases')"
 
+if [ ${#databases} == "0" ]
+then
+    echo 'The databases list is empty!'
+    echo 'BackUp aborted!'
+    echo
+    exit 1
+fi
 
-# filling some information to the log file
+
+# Filling some information to the log file
 echo "List of dumping databases in $read_mee"
 echo "Dump create $current_date at $current_time" > "$read_mee"
 echo "-------------------------" >> "$read_mee"
-echo "Warning: if you made dump with out compression the *.sql files include commands:" >> "$read_mee"
+echo "Warning: if you made dump with out compression, the *.sql files include commands:" >> "$read_mee"
 echo "\"DROP DATABASE IF EXIST...\"    \"CREATE DATABASE...\"    \"USE...\"" >> "$read_mee"
 echo >> "$read_mee"
 echo "Dumped databases list:" >> "$read_mee"
