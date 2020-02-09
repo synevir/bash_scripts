@@ -1,0 +1,18 @@
+// Re-ordering Column sequence (primary key auto-increment).
+
+
+// How does it work:
+// ALTER TABLE <table-name>
+// DROP id,
+// ADD id INT UNSIGNED NOT NULL AUTO_INCREMENT FIRST,
+// AUTO_INCREMENT = 1;
+
+// ordering is desirable to perform using a single command
+// оr wrap command in to transaction (BEGIN/END)
+
+
+
+
+>$ mysql -D [database_name] -u [user_name] -p[password]
+   -e "ALTER TABLE <table-name> DROP id, ADD id INT UNSIGNED NOT NULL AUTO_INCREMENT FIRST,
+    AUTO_INCREMENT = 1;"
