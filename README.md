@@ -1,4 +1,4 @@
-# bash_scripts
+# Bash scripts
 Repository for bash scripts
 - MySQL_scripts/ - admin's scripts for work with MySQL database server
 - chome_backup.sh - script for backup chrome bookmarks
