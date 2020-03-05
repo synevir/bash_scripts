@@ -22,7 +22,8 @@
 # Options:                                                              #
 #       -z compress `*.sql` files by `gzip -<value>`                    #
 #           <value> compress ratio from 1 to 9 (default ratio value 5)  #
-#       -d add to mydsqldump --add-drop-database options                #
+#       -d add to mydsqldump `--add-drop-database` options              #
+#            (default key)                                              #
 #                                                                       #
 #########################################################################
 
@@ -121,7 +122,7 @@ do
            # `need a password` line:
            #  mysqldump -u "$mysql_user" -h "$mysql_host" -p"$mysql_pass" "$db" | gzip -9 > "$FILE".gz
            echo -en "Dumping database $db..."
-           mysqldump -u "$mysql_user" "$db" | gzip -$compress_ratio > "$FILE".gz
+           mysqldump --opt -u "$mysql_user" "$db" | gzip -$compress_ratio > "$FILE".gz
            result=$?
            if [ $result -ne 0 ]
            then
@@ -132,7 +133,7 @@ do
            fi
        else
            # If you need uncompressed dump
-           mysqldump --add-drop-database -u $mysql_user -B $db > "$FILE"
+           mysqldump --add-drop-database --opt -u $mysql_user -B $db > "$FILE"
        fi
     fi
 done
