@@ -3,7 +3,7 @@
 #             Buckup MySQL databases script                             #
 #                    (using mysqldump)                                  #
 #                                                                       #
-# Dump file of a database called "<database_name>_<current_date>"       #
+# Script dumps a database and call it "<database_name>_<current_date>"  #
 # All dump files stored in directory "<dir_dest>/current_date/"         #
 #                                                                       #
 # If `root` user have a password, change value <mysql_pass>,            #
@@ -27,6 +27,9 @@
 #                                                                       #
 #########################################################################
 
+# Exit immediately if a command exits with a non-zero status.
+set -e
+
 mysql_user="root"                       # username with Grand priveleges for dump
 mysql_pass=""                           # password for user
 mysql_host="localhost"                  # hostname or IP of MySQL server
@@ -34,7 +37,7 @@ mysql_host="localhost"                  # hostname or IP of MySQL server
 # Ignore databases list. Use space between bases.
 ignore_bases="test information_schema performance_schema"
 
-# default comperss ratio for gzip
+# default compress ratio for gzip
 compress_ratio=5
 
 # If compression is used set compress ratio
