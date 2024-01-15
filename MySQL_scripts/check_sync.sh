@@ -13,7 +13,7 @@
 # Stage #2 Compare checksums ~> check_sync.sh   or  `check_sync.sh | grep -b3 'NOT SYNC` for list unsync tables
 #     The script gets the checksums from the tables on the master/slave and compares them.
 #     Table with checksums is saved on master-server until the next run of the stage#1.
-#     
+#
 # options:
 #         -m CHECK_SUM_MASTER mode 'ON'
 #         -d replication database_name
@@ -25,6 +25,9 @@
 # To get promptly table's checksum values for MyISAM engine tables recommended to query 
 # INFORMATION_SCHEMA.TABLES table.
 # ----------------------------------------------------------------------------------------------------------------
+# NOTE: This script was tested on server MariaDB v.11, so if you use MySQL server you need to change commands
+#       `mariadb ....` to `mysql....`
+# ----------------------------------------------------------------------------------------------------------------
 
 set -e
 
@@ -33,7 +36,7 @@ set -e
 # -------------------------------------------------------------------------------------------------------------
 DB='joints'                                          # Database name
 TB='chk'                                             # Name or service table where to store checksums
-DB_TB="$DB.$TB" 
+DB_TB="$DB.$TB"
 SYNC_TB='*'                                          # Table for check synchronization. Default all tables
 
 MASTER_HOST='localhost'
@@ -56,9 +59,9 @@ while getopts "md:t:" opt ;  do
      case $opt in
          m) echo "CHECK_SUM_MASTER MODE=ON"
             CHK_MM='ON' ;;
-         d) echo Database to check synchronization:   ${OPTARG}   
+         d) echo Database to check synchronization:   ${OPTARG}
             DB=${OPTARG} ;;
-         t) echo "Sync table: " ${OPTARG}  
+         t) echo "Sync table: " ${OPTARG}
             SYNC_TB=${OPTARG} ;;
          :) echo "Error: option ${OPTARG} requires an argument"  ;;
          ?) echo "Invalid option: ${OPTARG}"
@@ -77,13 +80,13 @@ echo
 
 
 # compare_checksums [1]$table_name, [2]$master_checksum, [3]$slave_checksum, [4]$master_timestamp, [5]$slave_timestamp
-function compare_checksums {  
+function compare_checksums {
   if [[ $3 == $2  ]] ; then
       echo "$1 ~> Cheksum status: OK "
       (( lag=$5-$4 ))
       echo "lag: $lag sec."
-    else 
-      echo "Sync status:   NOT SYNC!"   
+    else
+      echo "Sync status:   NOT SYNC!"
   fi
   echo 'SUMMARY:'
   echo "master checksum: $master_checksum"
@@ -97,7 +100,7 @@ function compare_checksums {
 
 
 # ====================================================
-#       CHECKSUM_MASTER MODE Section
+#       CHECKSUM_MASTER MODE Section  (Stage #1)
 # ====================================================
 # if [ "$CHK_MM"='ON' ] ; then
 # .......  section content .......
@@ -110,10 +113,10 @@ mariadb -e "drop table IF EXISTS $DB_TB"
 mariadb -e "CREATE TABLE $DB_TB(tbl_name VARCHAR(64), chk_sum BIGINT(21) UNSIGNED, dt DATETIME)"
 echo Creating service table \'$DB_TB\' on \'$MASTER_HOST\' - Ok.
 echo
-                                                            
+
 # Tables list for check sync
 if [ "$SYNC_TB" = '*' ] ; then
-        tables=(`mariadb -N -e "SHOW tables FROM $DB"`)       
+        tables=(`mariadb -N -e "SHOW tables FROM $DB"`)
     else
         tables="$SYNC_TB"
 fi
@@ -122,17 +125,17 @@ fi
 for tbl in "${tables[@]}"; do
     echo Processing table: $tbl
     echo -------------------------------------------
-    
+
   # Skip service table
     if [[ "$tbl" == "$TB" ]] ; then continue
     fi
-  
+
   # Get CHECKSUM for table
     str_val=`mariadb --host=$MASTER_HOST -N -e "CHECKSUM TABLE $DB.$tbl"`
     checksum_table_result=($str_val)                   # split result string into array of words
     table_name=\'${checksum_table_result[0]}\'         # add "'" to $table_name value
     table_checksum=${checksum_table_result[1]}
-    
+
     echo "Database:  $DB"
     echo "table:     $table_name"
     echo "checksume: $table_checksum"
@@ -151,13 +154,14 @@ echo
 #      End of CHECKSUM_MASTER MODE Section
 # ---------------------------------------------------
 
+
 # ====================================================
-#       CHECKSUM_SLAVE MODE Section
+#       CHECKSUM_SLAVE MODE Section  (Stage #2)
 # ====================================================
 
 # Tables list for check sync
 if [ "$SYNC_TB" = '*' ] ; then
-        tables=(`mariadb -N -e "SHOW tables FROM $DB"`)       
+        tables=(`mariadb -N -e "SHOW tables FROM $DB"`)
     else
         tables="$SYNC_TB"
 fi
@@ -166,26 +170,25 @@ fi
 for tbl in "${tables[@]}"; do
     echo Processing table: $tbl
     echo -------------------------------------------
-  
+
   # Skip service table
     if [[ "$tbl" == "$TB" ]] ; then
         echo; continue ;
     fi
-    
-    tbl_name=\'$DB.$tbl\'    
+
+    tbl_name=\'$DB.$tbl\'
   # Get checksum from MASTER/SLAVE hosts
     query="SELECT chk_sum FROM $DB_TB WHERE tbl_name=$tbl_name;"
     slave_checksum=`mariadb --host=$SLAVE_HOST -N -e "$query"`
     master_checksum=`mariadb --host=$MASTER_HOST -N -e "$query"`
-    
+
   # Get timestapms SLAVE-MASTER for calc repliacation lag
-    query="SELECT UNIX_TIMESTAMP(dt) FROM $DB_TB WHERE tbl_name=$tbl_name;"    
+    query="SELECT UNIX_TIMESTAMP(dt) FROM $DB_TB WHERE tbl_name=$tbl_name;"
     slave_timestamp=`mariadb --host=$SLAVE_HOST -N -e "$query"`
-    slave_timestamp=`expr $slave_timestamp + 10`                        # add manual +10 sec. lag for test 
+    slave_timestamp=`expr $slave_timestamp + 10`                        # add manual +10 sec. lag for test
     master_timestamp=`mariadb --host=$MASTER_HOST -N -e "$query"`
-    
-  # Compare checksums and timestamps MASTER/SLAVE   
+
+  # Compare checksums and timestamps MASTER/SLAVE
     compare_checksums $tbl $master_checksum $slave_checksum $master_timestamp $slave_timestamp
 
 done
-
