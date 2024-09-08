@@ -1,7 +1,6 @@
 # Bash scripts
 Repository for bash scripts:
 - **/MySQL_scripts** - admin's scripts for working with MySQL database server;
-
    &nbsp;&nbsp;&nbsp;&nbsp; ./**backup_with_filter.sh** - script makes dump of database tables using pattern;<br>
    &nbsp;&nbsp;&nbsp;&nbsp; ./**check_sync.sh** - check tables synchronization in replication database 
       (Master-Slave schema);<br>
@@ -11,8 +10,9 @@ Repository for bash scripts:
    &nbsp;&nbsp;&nbsp;&nbsp; ./**re_ordering_primary_key** - Re-ordering column sequence for auto-increment 
       primary key;<br>
    &nbsp;&nbsp;&nbsp;&nbsp; ./**rename_db.sh** - script for database renameing;<br>
-   &nbsp;&nbsp;&nbsp;&nbsp; ./**trnasfer_big_file** - transfer file between two servers by "conveyor" methods 
+   &nbsp;&nbsp;&nbsp;&nbsp; ./**transfer_big_file** - transfer file between two servers by "conveyor" methods 
       using ssh;<br>
+
 - **chome_backup.sh** - script for backup chrome bookmarks;
 - **fizz_buzz.sh** - FizzBuzz task;
 - **kill_ps.sh** - script kills all proceses of 'tty pts/';
