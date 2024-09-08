@@ -1,6 +1,7 @@
 # Bash scripts
 Repository for bash scripts:
 - **/MySQL_scripts** - admin's scripts for working with MySQL database server;
+
    &nbsp;&nbsp;&nbsp;&nbsp; ./**backup_with_filter.sh** - script makes dump of database tables using pattern;<br>
    &nbsp;&nbsp;&nbsp;&nbsp; ./**check_sync.sh** - check tables synchronization in replication database 
       (Master-Slave schema);<br>
