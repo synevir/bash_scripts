@@ -14,6 +14,12 @@ Repository for bash scripts:
    &nbsp;&nbsp;&nbsp;&nbsp; ./**transfer_big_file** - transfer file between two servers by "conveyor" methods 
       using ssh;<br>
 
+- **/Admins_scripts** - scripts for automation of admin's work tasts;
+   &nbsp;&nbsp;&nbsp;&nbsp; ./**Truncate_logs/rotate_log.sh** - script truncates log files by a specified percentage of lines;<br>
+
+
+
+
 - **chome_backup.sh** - script for backup chrome bookmarks;
 - **fizz_buzz.sh** - FizzBuzz task;
 - **kill_ps.sh** - script kills all proceses of 'tty pts/';
