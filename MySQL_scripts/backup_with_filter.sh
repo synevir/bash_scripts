@@ -22,7 +22,7 @@
 # You can change pattern format in "Read option section"
 
 
-# Original commands has gotten from site highload.today
+# Original commands has been gotten from site highload.today
 #
 # DBNAME=**database**
 # PATTERN=**%pho%**
@@ -42,12 +42,13 @@ pattern="%"
 all_tables='n'
 ERROR_LOG='error.log'
 compressor='gzip'
+
 echo '--------------------------------------------------------'
 
 # Check server availability
-mysql -e "SELECT current_user()\G" > /dev/null
+mysql -e "SELECT current_user()\G" 2> /dev/null
 result=$?
-[[ $result -ne 0 ]] && { echo -e ".....script aborted!\n"; exit 0; }
+[[ $result -ne 0 ]] && { echo -e "Server connection refused.....script aborted!\n"; exit 0; }
 
 
 # Read options section
@@ -98,16 +99,18 @@ cat tables.txt
 
 
 # Create tables dump
+# Get data in yyyy_mm_dd format
+current_date="$(date +"%Y_%m_%d")"      
 case "$compressor" in
-    gzip) mysqldump `echo $db_name` `cat tables.txt` 2>> $ERROR_LOG | gzip > dump.sql.gz ;;
+    gzip) mysqldump `echo $db_name` `cat tables.txt` 2>> $ERROR_LOG | gzip > "dump.$current_date.sql.gz" ;;
       7z) mysqldump `echo $db_name` `cat tables.txt` 2>> $ERROR_LOG | 7z a -si -mx5 dump.sql.7z ;;
-      # `7z -si` option works equal `>>` (add), 
-      #  so if you already have `dump.sql.7z` you must delete it before create new dump! 
+      # `7z -si` option works as `>>` (add),
+      #  so if you already have `dump.sql.7z` you must delete it before create new dump!
 esac
 
 rm tables.txt
 echo
-echo "Dump complited:"
-ls -o dump.sql*
+echo "Dump complited. List dump files:"
+ls -o dump*
 echo
 exit 0
