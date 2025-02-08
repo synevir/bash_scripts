@@ -1,1 +1,0 @@
-/home/reebok/Bash/Admins_scripts/SMART_HDD/color_echo.sh
