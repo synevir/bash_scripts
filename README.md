@@ -14,7 +14,9 @@ Repository for bash scripts:
    &nbsp;&nbsp;&nbsp;&nbsp; ./**transfer_big_file** - transfer file between two servers by "conveyor" methods 
       using ssh;<br>
 
-- **/Admins_scripts** - scripts for automation of admin's work tasts;
+- **/Admins_scripts** - scripts for automation of admin's work tasks;
+
+   &nbsp;&nbsp;&nbsp;&nbsp; ./**Hdd_smart_monitor/smart_hdd.sh** - script for S.M.A.R.T. atributes monitoring;<br>
    &nbsp;&nbsp;&nbsp;&nbsp; ./**Truncate_logs/rotate_log.sh** - script truncates log files by a specified percentage of lines;<br>
 
 
