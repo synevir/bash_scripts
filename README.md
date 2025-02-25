@@ -13,6 +13,8 @@ Repository for bash scripts:
    &nbsp;&nbsp;&nbsp;&nbsp; ./**rename_db.sh** - script for database renameing;<br>
    &nbsp;&nbsp;&nbsp;&nbsp; ./**transfer_big_file** - transfer file between two servers by "conveyor" methods 
       using ssh;<br>
+   &nbsp;&nbsp;&nbsp;&nbsp; ./**mysql_db_size** - calculating database(s) size;<br>
+
 
 - **/Admins_scripts** - scripts for automation of admin's work tasks;
 

@@ -15,5 +15,5 @@ function EchoGreen {
 }
 
 function EchoRed {
-  echo -e "$RED $1 $GRAY"
+  echo -e "$RED $1 $RESET"
 }

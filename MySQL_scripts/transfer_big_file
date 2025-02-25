@@ -1,15 +1,20 @@
-# --------- Big files "conveyor" copy methods -----------
+# -------------------------------------------------------
+# ------   Big files "conveyor" copy methods   ----------
 # -------------------------------------------------------
 
+# *********************************************
 # Transfer files between two servers using SSH
-source_server$ gzip -c - /path_to_db_file_MYD | ssh root@destination_server"gunzip -c - > path_to_db_file_MYD
+# *********************************************
+source_server$ gzip -c - /path_to_db_file_MYD | ssh root@destination_server"gunzip -c - > path_to_db_file_MYD"
 
 
+
+# **********************************
 # Transfer using 'netcat' and ports
+# **********************************
 
 # _________ Method with gzip compression _________
-
-# listening to port 12345 and unpacking evуrything to destination file
+# listening to port 12345 and unpacking everything to destination file
 destination_server$ nc -l -p 12345 | gunzip -c - > /path_to_db_file_MYD
 
 # pack file and pass to netcat to port 12345
@@ -17,9 +22,8 @@ source_server$ gzip -c - /path_to_db_file_MYD | nc -q 1 destination_server 12345
 
 
 # _________ Method without compression ____________
-
 # activate listening port 12345 on destination server
 destination_server$ nc -l -p 12345 | tar xvzf
 
-# source server paсks and pass database's file of table (or backup file) to `netcat` program
+# source server paсks and pass database's file of table (or backup file) to `netcat` utility
 source_server$ tar cvzf - path_to_db_file_MYD | nc -q 1 destination_server 12345

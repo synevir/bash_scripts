@@ -149,7 +149,7 @@ do
      # обчислюємо кількість днів між перевірками
      file_timestamp=$(stat -c %Y $last_file)
      let file_age=($current_timestamp-$file_timestamp)/86400 #--> 1day = 60sec*60min*24h
-     last_file_date=${last_file_date:0:2}-${last_file_date:0:2}-${last_file_date:4:2}
+     last_file_date=${last_file_date:0:4}-${last_file_date:4:2}-${last_file_date:6:2}
 
      echo -n "Diff with  < LAST >  check for disk \`$disk\` on $last_file_date   ($file_age days ago): "
      echo -n "Diff with  < LAST >  check for disk \`$disk\` on $last_file_date   ($file_age days ago):" >> $report_file
