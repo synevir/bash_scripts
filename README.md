@@ -21,6 +21,7 @@ Repository for bash scripts:
    &nbsp;&nbsp;&nbsp;&nbsp; ./**Hdd_smart_monitor/smart_hdd.sh** - script for S.M.A.R.T. atributes monitoring;<br>
    &nbsp;&nbsp;&nbsp;&nbsp; ./**Truncate_logs/rotate_log.sh** - script truncates log files by a specified percentage of lines;<br>
 
+- **/Split** - scripts for split and combo streams in video with ffmpeg program;
 
 
 
